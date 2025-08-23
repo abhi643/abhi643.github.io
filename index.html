@@ -1337,35 +1337,67 @@
             }
         }
 
+
+        /* 1. Aligns all navigation items vertically in the center */
         .nav-links {
             display: flex;
             list-style: none;
             gap: 30px;
-            align-items: center; /* This is the key fix for vertical alignment */
+            align-items: center;
         }
 
+        /* 2. Base style for the resume button */
+        /* Final, robust resume button style */
         .resume-button-nav {
-            display: inline-block; /* A simpler display type now that there's no icon */
-            padding: 12px 25px; /* Explicit, generous padding */
+            display: inline-flex;  /* Use flexbox to properly handle the icon and text */
+            align-items: center;   /* Vertically center the content */
+            gap: 8px;              /* Creates space between the icon and the text */
+
+            /* Explicit padding values for spacing */
+            padding-top: 12px;
+            padding-bottom: 12px;
+            padding-left: 20px;
+            padding-right: 20px;
+
             color: var(--accent);
             text-decoration: none;
             font-weight: 600;
-            font-size: 0.9rem; /* Matches other nav links to help alignment */
-            line-height: 1.2; /* Enforces a consistent line height */
+            font-size: 0.9rem;
+            line-height: 1; /* Prevents inconsistent height issues */
             border: 1px solid var(--accent);
             border-radius: 6px;
             transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
         }
 
-        .resume-button-nav:hover {
-            color: var(--primary-dark);
-            border-color: var(--accent-light);
-            transform: translateY(-4px) scale(1.05);
-            box-shadow:
-                    0 10px 30px rgba(0, 0, 0, 0.2),
-                    0 0 30px rgba(100, 255, 218, 0.4),
-                    0 0 60px rgba(100, 255, 218, 0.2);
+        /* 3. This creates the invisible layer for the fill animation */
+        .resume-button-nav::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0; /* Starts with zero width */
+            height: 100%;
+            background-color: var(--accent); /* The color of the fill */
+            transition: var(--transition);
+            z-index: -1; /* Places it behind the text */
         }
+
+        /* 4. Defines the hover state */
+        a.resume-button-nav:hover {
+            color: var(--primary-dark); /* Changes text color to dark */
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(100, 255, 218, 0.2);
+        }
+
+        /* 5. This animates the fill layer on hover */
+        .resume-button-nav:hover::before {
+            width: 100%; /* Expands the layer to full width */
+        }
+
+        /* Prevents the default underline animation from appearing on the button */
         .resume-button-nav:after {
             display: none;
         }
