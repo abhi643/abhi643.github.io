@@ -979,73 +979,63 @@
                 grid-template-columns: 1fr;
             }
         }
-        /* 1. Move the canvas to the right half of the screen */
         #neural-canvas {
-            left: 50%; /* Start the canvas from the horizontal center */
-            width: 50%;  /* Make it occupy only the right 50% */
+            left: 50%;
+            width: 50%;
         }
 
-        /* 2. Confine the text container to the left half */
         .hero .container {
-            max-width: 50%;     /* Ensure the container doesn't go past the halfway mark */
-            margin: 0;          /* Remove the 'auto' margin that centers it */
-            padding: 0 40px;    /* Add some padding for spacing */
+            max-width: 50%;
+            margin: 0;
+            padding: 0 40px;
         }
 
-        /* Add this CSS at the end of your <style> section */
         .case-study-image {
-            /* Replace old image styles with flexbox for centering */
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100%;
-            min-height: 250px; /* Ensures a minimum height */
+            min-height: 250px;
 
-            /* Optional: Add a subtle background to the icon container */
-            background-color: rgba(10, 25, 47, 0.5); /* A darker shade from your palette */
-            border: 1px solid rgba(136, 146, 176, 0.1); /* Subtle border */
+            background-color: rgba(10, 25, 47, 0.5);
+            border: 1px solid rgba(136, 146, 176, 0.1);
         }
 
-        /* 1. Change the about section to a single-column layout */
         .about-content {
-            grid-template-columns: 1fr; /* No more side-by-side columns */
-            gap: 40px; /* Add some space between the image and text */
+            grid-template-columns: 1fr;
+            gap: 40px;
         }
 
-        /* 2. Style the new cover image */
         .about-cover-image {
             width: 100%;
-            max-height: 220px; /* Control the height of the cover image */
-            transform: none; /* Remove the old 3D tilt effect */
+            max-height: 220px;
+            transform: none;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
             border-radius: 8px;
         }
 
         .about-cover-image:hover {
-            transform: scale(1.02); /* A simpler, clean hover effect */
+            transform: scale(1.02);
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
         }
 
         .about-cover-image img {
-            object-fit: cover; /* Ensures the image covers the area without distortion */
+            object-fit: cover;
             height: 100%;
-            filter: none; /* Reset old filter */
+            filter: none;
         }
 
-        /* 3. Center the text block now that it's full-width */
         .about-text {
-            max-width: 800px; /* Prevent text from becoming too wide on large screens */
-            margin: 0 auto;   /* Center the text block horizontally */
-            text-align: center; /* Center the text inside the block */
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
         }
 
-        /* A more specific rule to center the 'About Me' heading */
         section#about h2 {
             display: block !important;
             text-align: center !important;
         }
 
-        /* A more specific rule for the underline */
         section#about h2:after {
             left: 50% !important;
             transform: translateX(-50%) !important;
@@ -1235,7 +1225,6 @@
             font-weight: 600;
         }
 
-        /* Tech Stack Showcase */
         .tech-showcase {
             margin-top: 60px;
         }
@@ -1295,7 +1284,6 @@
             transform: translateY(-2px);
         }
 
-        /* Responsive Design */
         @media (max-width: 968px) {
             .about-content {
                 grid-template-columns: 1fr;
@@ -1321,22 +1309,18 @@
             }
         }
 
-        /* --- Responsive Hero Section Fix --- */
         @media (max-width: 768px) {
-            /* 1. Make the hero section content stack vertically */
             .hero .container {
                 max-width: 100%;
-                padding: 0 25px; /* Adjust padding for mobile */
+                padding: 0 25px;
             }
 
-            /* 2. Restore the animation to a full, subtle background */
             #neural-canvas {
                 left: 0;
                 width: 100%;
-                opacity: 0.25; /* Lower opacity to make text more readable */
+                opacity: 0.25;
             }
 
-            /* 3. Center all text for a clean mobile layout */
             .hero-content {
                 text-align: center;
                 display: flex;
@@ -1344,14 +1328,46 @@
                 align-items: center;
             }
 
-            /* 4. Tweak font sizes for smaller screens */
             .hero h1 {
-                font-size: 2.5rem; /* Slightly smaller main heading */
+                font-size: 2.5rem;
             }
 
             .hero-subtitle {
-                font-size: 1.4rem; /* Slightly smaller subtitle */
+                font-size: 1.4rem;
             }
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+            align-items: center; /* This is the key fix for vertical alignment */
+        }
+
+        .resume-button-nav {
+            display: inline-block; /* A simpler display type now that there's no icon */
+            padding: 12px 25px; /* Explicit, generous padding */
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem; /* Matches other nav links to help alignment */
+            line-height: 1.2; /* Enforces a consistent line height */
+            border: 1px solid var(--accent);
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+
+        .resume-button-nav:hover {
+            color: var(--primary-dark);
+            border-color: var(--accent-light);
+            transform: translateY(-4px) scale(1.05);
+            box-shadow:
+                    0 10px 30px rgba(0, 0, 0, 0.2),
+                    0 0 30px rgba(100, 255, 218, 0.4),
+                    0 0 60px rgba(100, 255, 218, 0.2);
+        }
+        .resume-button-nav:after {
+            display: none;
         }
     </style>
 </head>
@@ -1368,6 +1384,10 @@
                 <li><a href="#experience">Experience</a></li>
                 <li><a href="#projects">Projects</a></li>
                 <li><a href="#contact">Contact</a></li>
+                <li><a href="https://drive.google.com/file/d/12ScYnwwf72-JmkxuTYEYl0n5ioVU-02Z/view?usp=sharing" target="_blank" class="resume-button-nav">
+                    <i class="far fa-file-alt"></i>
+                    Resume
+                </a></li>
             </ul>
         </nav>
     </div>
@@ -1410,22 +1430,6 @@
     <div class="hero-scroll-indicator">Scroll Down</div>
 </section>
 
-<!--<section id="about">-->
-<!--    <div class="container">-->
-<!--        <h2>About Me</h2>-->
-<!--        <div class="about-content">-->
-<!--            <div class="about-text">-->
-<!--                <p>I'm a results-oriented Bachelor of Computer Applications student...</p>-->
-<!--                <p>I combine technical expertise with natural teaching abilities...</p>-->
-<!--                <p>When I'm not coding, you can find me exploring new technologies...</p>-->
-<!--            </div>-->
-
-<!--            <div class="about-cover-image">-->
-<!--                <img src="https://ghchart.rshah.org/abhi643" alt="Abhinav Sharma's GitHub Contributions">-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</section>-->
 <section id="about">
     <div class="container">
         <h2>About Me</h2>
