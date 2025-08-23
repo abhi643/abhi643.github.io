@@ -1320,6 +1320,39 @@
                 grid-template-columns: repeat(2, 1fr);
             }
         }
+
+        /* --- Responsive Hero Section Fix --- */
+        @media (max-width: 768px) {
+            /* 1. Make the hero section content stack vertically */
+            .hero .container {
+                max-width: 100%;
+                padding: 0 25px; /* Adjust padding for mobile */
+            }
+
+            /* 2. Restore the animation to a full, subtle background */
+            #neural-canvas {
+                left: 0;
+                width: 100%;
+                opacity: 0.25; /* Lower opacity to make text more readable */
+            }
+
+            /* 3. Center all text for a clean mobile layout */
+            .hero-content {
+                text-align: center;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            /* 4. Tweak font sizes for smaller screens */
+            .hero h1 {
+                font-size: 2.5rem; /* Slightly smaller main heading */
+            }
+
+            .hero-subtitle {
+                font-size: 1.4rem; /* Slightly smaller subtitle */
+            }
+        }
     </style>
 </head>
 <body>
