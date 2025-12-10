@@ -7,7 +7,7 @@
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
         :root {
             --primary-dark: #0a192f;
@@ -21,6 +21,7 @@
             --transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
             --font-mono: 'SF Mono', 'Fira Code', 'Roboto Mono', monospace;
             --font-sans: 'Calibre', 'Inter', 'San Francisco', 'SF Pro Text', sans-serif;
+            --shadow-color: rgba(0, 0, 0, 0.2);
         }
 
         * {
@@ -35,6 +36,7 @@
             color: var(--text-secondary);
             line-height: 1.6;
             overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         .container {
@@ -72,6 +74,7 @@
             background-color: var(--accent);
         }
 
+        /* Header Styles */
         header {
             position: fixed;
             top: 0;
@@ -98,6 +101,7 @@
             display: flex;
             list-style: none;
             gap: 35px;
+            align-items: center;
         }
 
         .nav-links a {
@@ -128,16 +132,18 @@
             color: var(--accent);
         }
 
+        /* Neural Network Canvas */
         #neural-canvas {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 1;
-            pointer-events: auto;
+            z-index: 0;
+            pointer-events: none;
         }
 
+        /* Hero Section */
         .hero {
             height: 100vh;
             display: flex;
@@ -243,12 +249,13 @@
             position: absolute;
             top: 0;
             right: 0;
-            width: 50%;
+            width: 0%;
             height: 100%;
             overflow: hidden;
-            z-index: 1;
+            z-index: 0;
         }
 
+        /* FIXED: Gradient now uses Variable to blend perfectly in Light Mode */
         .hero-background::before {
             content: '';
             position: absolute;
@@ -256,7 +263,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, var(--primary-dark) 0%, rgba(10, 25, 47, 0.8) 30%, transparent 100%);
+            background: linear-gradient(90deg, var(--primary-dark) 0%, var(--primary-dark) 20%, transparent 100%);
             z-index: 2;
         }
 
@@ -293,18 +300,10 @@
         }
 
         @keyframes float {
-            0%, 100% {
-                transform: translateY(0) translateX(0) rotate(0deg);
-            }
-            25% {
-                transform: translateY(-20px) translateX(10px) rotate(5deg);
-            }
-            50% {
-                transform: translateY(0) translateX(20px) rotate(0deg);
-            }
-            75% {
-                transform: translateY(20px) translateX(10px) rotate(-5deg);
-            }
+            0%, 100% { transform: translateY(0) translateX(0) rotate(0deg); }
+            25% { transform: translateY(-20px) translateX(10px) rotate(5deg); }
+            50% { transform: translateY(0) translateX(20px) rotate(0deg); }
+            75% { transform: translateY(20px) translateX(10px) rotate(-5deg); }
         }
 
         .hero-scroll-indicator {
@@ -330,19 +329,12 @@
         }
 
         @keyframes scrollIndicator {
-            0% {
-                opacity: 0;
-                transform: translateY(0);
-            }
-            50% {
-                opacity: 1;
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(20px);
-            }
+            0% { opacity: 0; transform: translateY(0); }
+            50% { opacity: 1; }
+            100% { opacity: 0; transform: translateY(20px); }
         }
 
+        /* About Section */
         .about-content {
             display: grid;
             grid-template-columns: 2fr 3fr;
@@ -397,6 +389,7 @@
             filter: brightness(1) contrast(1.2);
         }
 
+        /* Workflow Flowchart */
         .workflow-section {
             background-color: var(--secondary-dark);
             padding: 100px 0;
@@ -420,7 +413,7 @@
             text-align: center;
             position: relative;
             transition: var(--transition);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 30px var(--shadow-color);
         }
 
         .workflow-step:hover {
@@ -467,6 +460,7 @@
             color: var(--text-secondary);
         }
 
+        /* Education & Certifications Section */
         .education-certifications {
             background-color: var(--secondary-dark);
             padding: 100px 0;
@@ -483,7 +477,7 @@
             border-radius: 10px;
             padding: 30px;
             margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 30px var(--shadow-color);
             transition: var(--transition);
         }
 
@@ -551,6 +545,7 @@
             background-color: rgba(100, 255, 218, 0.1);
         }
 
+        /* Skills Section */
         .skills-container {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -561,7 +556,7 @@
             background-color: var(--card-bg);
             border-radius: 10px;
             padding: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 30px var(--shadow-color);
             transition: var(--transition);
         }
 
@@ -594,12 +589,13 @@
             color: var(--accent);
         }
 
+        /* Experience Section */
         .experience-item {
             background-color: var(--card-bg);
             border-radius: 10px;
             padding: 30px;
             margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 30px var(--shadow-color);
             transition: var(--transition);
         }
 
@@ -648,17 +644,19 @@
             left: 0;
         }
 
+        /* Projects Section */
         .projects-header {
             text-align: center;
             margin-bottom: 60px;
         }
 
+        /* Case Study Section */
         .case-study {
             background-color: var(--card-bg);
             border-radius: 10px;
             padding: 40px;
             margin-bottom: 60px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 30px var(--shadow-color);
             transition: var(--transition);
         }
 
@@ -724,10 +722,19 @@
             gap: 20px;
         }
 
+        /* FIXED: Case Study Image Background handles Light/Dark */
         .case-study-image {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            min-height: 250px;
+            background-color: rgba(10, 25, 47, 0.5); /* Default Dark */
+            border: 1px solid rgba(136, 146, 176, 0.1);
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
         }
 
         .case-study-image img {
@@ -735,10 +742,6 @@
             height: auto;
             display: block;
             transition: var(--transition);
-        }
-
-        .case-study-image:hover img {
-            transform:none;
         }
 
         .case-study-links {
@@ -764,6 +767,7 @@
             background-color: rgba(100, 255, 218, 0.1);
         }
 
+        /* Contact Section */
         .contact-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -812,15 +816,17 @@
         .map-container {
             border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 30px var(--shadow-color);
             height: 400px;
         }
 
         #map {
             width: 100%;
             height: 100%;
+            /* Map stays light mode always, removed filters */
         }
 
+        /* Footer */
         footer {
             background-color: var(--secondary-dark);
             padding: 30px 0;
@@ -858,127 +864,7 @@
             font-size: 0.9rem;
         }
 
-        @media (max-width: 968px) {
-            .about-content,
-            .contact-container,
-            .education-certifications-container {
-                grid-template-columns: 1fr;
-            }
-
-            .case-study-content {
-                grid-template-columns: 1fr;
-            }
-
-            .map-container {
-                height: 300px;
-            }
-
-            .hero-background {
-                display: none;
-            }
-
-            .workflow-step::after {
-                display: none;
-            }
-
-            .workflow-chart {
-                flex-direction: column;
-                align-items: center;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .nav-links {
-                gap: 20px;
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-
-            section {
-                padding: 80px 0;
-            }
-
-            .case-study {
-                padding: 30px;
-            }
-
-            .experience-header {
-                flex-direction: column;
-                gap: 10px;
-            }
-
-            .hero-stats {
-                flex-direction: column;
-                gap: 20px;
-            }
-
-            .about-content {
-                grid-template-columns: 1fr;
-            }
-        }
-        #neural-canvas {
-            left: 50%;
-            width: 50%;
-        }
-
-        .hero .container {
-            max-width: 50%;
-            margin: 0;
-            padding: 0 40px;
-        }
-
-        .case-study-image {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100%;
-            min-height: 250px;
-
-            background-color: rgba(10, 25, 47, 0.5);
-            border: 1px solid rgba(136, 146, 176, 0.1);
-        }
-
-        .about-content {
-            grid-template-columns: 1fr;
-            gap: 40px;
-        }
-
-        .about-cover-image {
-            width: 100%;
-            max-height: 220px;
-            transform: none;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-            border-radius: 8px;
-        }
-
-        .about-cover-image:hover {
-            transform: scale(1.02);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
-        }
-
-        .about-cover-image img {
-            object-fit: cover;
-            height: 100%;
-            filter: none;
-        }
-
-        .about-text {
-            max-width: 800px;
-            margin: 0 auto;
-            text-align: center;
-        }
-
-        section#about h2 {
-            display: block !important;
-            text-align: center !important;
-        }
-
-        section#about h2:after {
-            left: 50% !important;
-            transform: translateX(-50%) !important;
-        }
-
-
+        /* About Content Styling */
         .about-content {
             display: grid;
             grid-template-columns: 2fr 3fr;
@@ -1013,7 +899,7 @@
             background-color: var(--card-bg);
             border-radius: 10px;
             padding: 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 30px var(--shadow-color);
         }
 
         .about-interests h3 {
@@ -1059,7 +945,7 @@
             background-color: var(--card-bg);
             border-radius: 10px;
             padding: 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 30px var(--shadow-color);
             transition: var(--transition);
         }
 
@@ -1129,7 +1015,7 @@
             background-color: var(--card-bg);
             border-radius: 10px;
             padding: 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 30px var(--shadow-color);
         }
 
         .quick-facts h3 {
@@ -1183,7 +1069,7 @@
             background-color: var(--card-bg);
             border-radius: 10px;
             padding: 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 30px var(--shadow-color);
             transition: var(--transition);
         }
 
@@ -1221,74 +1107,11 @@
             transform: translateY(-2px);
         }
 
-        @media (max-width: 968px) {
-            .about-content {
-                grid-template-columns: 1fr;
-                gap: 40px;
-            }
-
-            .interests-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .tech-categories {
-                grid-template-columns: 1fr;
-            }
-
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .hero .container {
-                max-width: 100%;
-                padding: 0 25px;
-            }
-
-            #neural-canvas {
-                left: 0;
-                width: 100%;
-                opacity: 0.25;
-            }
-
-            .hero-content {
-                text-align: center;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-
-            .hero-subtitle {
-                font-size: 1.4rem;
-            }
-        }
-
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 30px;
-            align-items: center;
-        }
-
         .resume-button-nav {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-
             padding: 10px 0;
-
             color: var(--text-primary);
             text-decoration: none;
             font-size: 1rem;
@@ -1326,7 +1149,7 @@
             background: var(--card-bg);
             border-radius: 15px;
             padding: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 30px var(--shadow-color);
             transition: var(--transition);
             position: relative;
             border: 1px solid rgba(136, 146, 176, 0.1);
@@ -1357,7 +1180,7 @@
         }
 
         .project-card.featured {
-            background: linear-gradient(135deg, var(--card-bg) 0%, rgba(100, 255, 218, 0.05) 100%);
+            background: var(--card-bg);
         }
 
         .featured-badge {
@@ -1514,20 +1337,6 @@
             color: var(--primary-dark);
         }
 
-        @media (max-width: 768px) {
-            .projects-grid {
-                grid-template-columns: 1fr;
-            }
-        
-            .project-card-footer {
-                flex-direction: column;
-            }
-        
-            .project-stats {
-                flex-wrap: wrap;
-            }
-        }
-
         .hamburger {
             display: none;
             cursor: pointer;
@@ -1554,12 +1363,141 @@
             transform: translateY(-8px) rotate(-45deg);
         }
 
+        /* --- THEME TOGGLE STYLES --- */
+
+        /* Light Mode Color Palette */
+        [data-theme="light"] {
+            --primary-dark: #ffffff;
+            --secondary-dark: #f8f9fa;
+            --accent: #00897b;
+            --accent-light: #4db6ac;
+            --text-primary: #1a202c;
+            --text-secondary: #4a5568;
+            --text-tertiary: #718096;
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --shadow-color: rgba(0, 137, 123, 0.1); /* Teal tint shadow */
+        }
+
+        /* Toggle Button Design */
+        .theme-toggle-btn {
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            font-size: 1.2rem;
+            z-index: 1002;
+        }
+
+        .theme-toggle-btn:hover {
+            background: rgba(100, 255, 218, 0.1);
+            transform: rotate(15deg);
+            box-shadow: 0 0 15px var(--accent);
+        }
+
+        /* Specific Light Mode Adjustments */
+        [data-theme="light"] header {
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+
+        [data-theme="light"] .hero-subtitle {
+            font-weight: 600;
+        }
+
+        [data-theme="light"] .nav-links {
+            background-color: rgba(255, 255, 255, 0.98);
+        }
+
+        [data-theme="light"] .case-study-image {
+            background-color: rgba(0, 137, 123, 0.05); /* Light teal tint */
+            border: 1px solid rgba(0, 137, 123, 0.1);
+        }
+
+        [data-theme="light"] .project-icon {
+            background: linear-gradient(135deg, rgba(0, 137, 123, 0.1), rgba(0, 137, 123, 0.2));
+            color: var(--accent);
+        }
+
+        @media (max-width: 968px) {
+            .about-content,
+            .contact-container,
+            .education-certifications-container {
+                grid-template-columns: 1fr;
+            }
+
+            .case-study-content {
+                grid-template-columns: 1fr;
+            }
+
+            .map-container {
+                height: 300px;
+            }
+
+            .hero-background {
+                display: none;
+            }
+
+            .workflow-step::after {
+                display: none;
+            }
+
+            .workflow-chart {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
         @media (max-width: 768px) {
+            .nav-links {
+                gap: 20px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            section {
+                padding: 80px 0;
+            }
+
+            .case-study {
+                padding: 30px;
+            }
+
+            .experience-header {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .hero-stats {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .project-card-footer {
+                flex-direction: column;
+            }
+
+            .project-stats {
+                flex-wrap: wrap;
+            }
 
             .hamburger {
                 display: block;
             }
-        
+
             .nav-links {
                 position: fixed;
                 left: -100%;
@@ -1577,32 +1515,32 @@
                 box-shadow: none;
                 padding: 0;
             }
-        
+
             .nav-links.active {
-                left: 0; 
+                left: 0;
             }
-        
+
             .nav-links li {
                 margin: 0;
             }
-        
+
             .nav-links a {
                 font-size: 1.5rem;
                 width: 100%;
             }
-        
+
             .hero {
                 padding-top: 100px;
                 height: auto;
                 min-height: 100vh;
                 text-align: center;
             }
-        
+
             .hero-content {
                 max-width: 100%;
                 padding: 0 15px;
             }
-        
+
             .hero h1 {
                 font-size: 3rem;
                 margin-top: 20px;
@@ -1613,12 +1551,12 @@
                 font-size: 1.5rem;
                 margin-bottom: 25px;
             }
-        
+
             .hero-description {
                 font-size: 1rem;
                 padding: 0 10px;
             }
-        
+
             .hero-stats {
                 flex-direction: row;
                 flex-wrap: wrap;
@@ -1630,11 +1568,11 @@
             .hero-stat {
                 min-width: 100px;
             }
-        
+
             section {
                 padding: 60px 0;
             }
-        
+
             h2 {
                 font-size: 1.8rem;
                 margin-bottom: 40px;
@@ -1646,16 +1584,16 @@
                 left: 50%;
                 transform: translateX(-50%);
             }
-        
-            .about-content, 
-            .education-certifications-container, 
-            .contact-container, 
-            .projects-grid, 
+
+            .about-content,
+            .education-certifications-container,
+            .contact-container,
+            .projects-grid,
             .skills-container {
                 grid-template-columns: 1fr;
                 gap: 30px;
             }
-        
+
             .workflow-chart {
                 flex-direction: column;
                 gap: 40px;
@@ -1677,38 +1615,104 @@
                 order: -1;
                 margin-bottom: 20px;
             }
-        
+
             .map-container {
                 height: 250px;
                 margin-top: 20px;
+            }
+
+            .theme-toggle-btn {
+                margin-left: auto;
+                margin-right: 15px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero .container {
+                max-width: 100%;
+                padding: 0 25px;
+            }
+
+            #neural-canvas {
+                left: 0;
+                width: 100%;
+                opacity: 0.25;
+            }
+
+            .hero-content {
+                text-align: center;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.4rem;
+            }
+
+            .tech-categories {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
 
         @media (min-width: 769px) {
             header .header-container {
                 display: grid !important;
-                grid-template-columns: 1fr auto 1fr; 
+                grid-template-columns: 1fr auto 1fr;
                 align-items: center;
-
                 max-width: 100% !important;
                 width: 100% !important;
                 margin: 0 !important;
-
                 padding-left: 25px !important;
                 padding-right: 25px !important;
             }
-        
+
             .logo {
-                margin-right: 0 !important; 
+                margin-right: 0 !important;
                 justify-self: start;
             }
-        
+
             nav {
                 justify-self: center;
-                grid-column: 2; 
+                grid-column: 2;
                 width: 100%;
                 display: flex;
                 justify-content: center;
+            }
+
+            .theme-toggle-btn {
+                justify-self: end;
+                grid-column: 3;
+            }
+
+            .hero {
+                justify-content: flex-start !important;
+                padding-left: 0 !important;
+            }
+
+            .hero .container {
+                margin-left: 0 !important;
+                margin-right: auto !important;
+                max-width: 55vw;
+                padding-left: 40px !important;
+                text-align: left;
+            }
+
+            .hero-content {
+                align-items: flex-start;
+                text-align: left;
+            }
+
+            .hero h1 {
+                font-size: 4.5rem;
             }
         }
 
@@ -1721,14 +1725,8 @@
 <body>
 <header id="header">
     <div class="container header-container">
-            <div class="logo" style="font-weight: 600; color: var(--text-primary); font-size: 1.1rem; margin-right: auto; z-index: 1001; font-family: var(--font-mono);">
-        <span style="color: var(--accent);">~/</span>cogito<span style="animation: blink 1s infinite; color: var(--accent);">_</span>
-    </div>
-
-        <div class="hamburger" id="hamburger-btn">
-            <div class="bar"></div>
-            <div class="bar"></div>
-            <div class="bar"></div>
+        <div class="logo" style="font-weight: 600; color: var(--text-primary); font-size: 1.1rem; margin-right: auto; z-index: 1001; font-family: var(--font-mono);">
+            <span style="color: var(--accent);">~/</span>cogito<span style="animation: blink 1s infinite; color: var(--accent);">_</span>
         </div>
 
         <nav>
@@ -1748,6 +1746,16 @@
                 </li>
             </ul>
         </nav>
+
+        <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle Dark Mode">
+            <i class="fas fa-sun"></i>
+        </button>
+
+        <div class="hamburger" id="hamburger-btn">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
     </div>
 </header>
 <section class="hero" id="home">
@@ -2138,9 +2146,7 @@
             </p>
         </div>
 
-        <!-- Project Cards Grid -->
         <div class="projects-grid">
-            <!-- Metavox Project Card -->
             <div class="project-card" data-category="full-stack">
                 <div class="project-card-header">
                     <div class="project-icon">
@@ -2172,7 +2178,6 @@
                 </div>
             </div>
 
-            <!-- Elanters Project Card -->
             <div class="project-card" data-category="full-stack">
                 <div class="project-card-header">
                     <div class="project-icon">
@@ -2185,7 +2190,7 @@
                 </div>
                 <h3 class="project-card-title">Elanters Gardening Site</h3>
                 <p class="project-card-description">
-                                        Full-featured admin portal with optimized REST APIs, automated CI/CD pipeline via GitHub Actions, JWT authentication, and intelligent SMTP email automation for seamless order notifications.
+                                            Full-featured admin portal with optimized REST APIs, automated CI/CD pipeline via GitHub Actions, JWT authentication, and intelligent SMTP email automation for seamless order notifications.
                 </p>
                 <div class="project-stats">
                     <div class="stat">
@@ -2204,7 +2209,6 @@
                 </div>
             </div>
 
-            <!-- Lenskart Project Card -->
             <div class="project-card featured" data-category="ai-ml">
                 <div class="project-card-header">
                     <div class="project-icon">
@@ -2239,7 +2243,6 @@
                 </div>
             </div>
 
-            <!-- Trendify Project Card -->
             <div class="project-card featured" data-category="full-stack">
                 <div class="project-card-header">
                     <div class="project-icon">
@@ -2275,7 +2278,6 @@
             </div>
         </div>
 
-        <!-- Detailed Case Studies -->
         <div style="margin-top: 80px;">
             <h3 style="text-align: center; color: var(--text-primary); font-size: 2rem; margin-bottom: 50px;">
                 Deep Dive: Case Studies
@@ -2448,111 +2450,177 @@
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-    // Neural Network Variables
     let scene, camera, renderer, particles, connections = [];
     let mouse = { x: 0, y: 0 };
     let nodePositions = [];
     let nodeVelocities = [];
+    let isCanvasVisible = true;
+    
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const themeIcon = themeToggleBtn.querySelector('i');
+    const htmlElement = document.documentElement;
+
+    const savedTheme = localStorage.getItem('theme');
+    let currentTheme = savedTheme || 'dark';
+    
+    // Apply Theme on Load
+    applyTheme(currentTheme);
+
+    themeToggleBtn.addEventListener('click', () => {
+        currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        applyTheme(currentTheme);
+        localStorage.setItem('theme', currentTheme);
+    });
+
+    function applyTheme(theme) {
+        htmlElement.setAttribute('data-theme', theme);
+        themeIcon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+        updateThreeJSTheme(theme);
+        updateLordiconTheme(theme);
+    }
+
+    function updateThreeJSTheme(theme) {
+        if (!scene || !particles) return;
+        
+        const particleColor = theme === 'dark' ? 0x64ffda : 0x00897b;
+        
+        particles.material.color.setHex(particleColor);
+        
+        if (connections.length > 0) {
+            connections.forEach(conn => {
+                if(conn.line) {
+                    conn.line.material.color.setHex(particleColor);
+                    conn.line.material.opacity = theme === 'dark' ? 0.15 : 0.3;
+                }
+            });
+        }
+    }
+
+    function updateLordiconTheme(theme) {
+        const icons = document.querySelectorAll('lord-icon');
+        const primary = theme === 'dark' ? '#64ffda' : '#00897b';
+        const secondary = theme === 'dark' ? '#a8b2d1' : '#4a5568'; 
+        
+        icons.forEach(icon => {
+            icon.setAttribute('colors', `primary:${primary},secondary:${secondary}`);
+        });
+    }
 
     function toggleMenu() {
-    const nav = document.getElementById('nav-links');
-    const hamburger = document.getElementById('hamburger-btn');
-    nav.classList.toggle('active');
-    hamburger.classList.toggle('toggle');
-}
+        const nav = document.getElementById('nav-links');
+        const hamburger = document.getElementById('hamburger-btn');
+        nav.classList.toggle('active');
+        hamburger.classList.toggle('toggle');
+    }
+    document.getElementById('hamburger-btn').addEventListener('click', toggleMenu);
 
-document.getElementById('hamburger-btn').addEventListener('click', toggleMenu);
+    
+    window.onload = function() {
+        initMap();
+        
+        if (window.innerWidth > 768) {
+            initNeuralNetwork();
+        } else {
+            const canvas = document.getElementById('neural-canvas');
+            if(canvas) canvas.style.display = 'none';
+        }
 
-    // Initialize Neural Network
+        setTimeout(() => updateThreeJSTheme(currentTheme), 100);
+
+        const header = document.getElementById('header');
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-links a');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) header.classList.add('scrolled');
+            else header.classList.remove('scrolled');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= (sectionTop - 200)) {
+                    current = section.getAttribute('id');
+                }
+            });
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').slice(1) === current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        window.addEventListener('resize', handleResize);
+        
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    };
+
     function initNeuralNetwork() {
         const canvas = document.getElementById('neural-canvas');
+        if (!canvas) return; 
+        
         const rect = canvas.getBoundingClientRect();
-
         scene = new THREE.Scene();
         camera = new THREE.PerspectiveCamera(75, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
         renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
-
         renderer.setSize(canvas.clientWidth, canvas.clientHeight);
         renderer.setClearColor(0x000000, 0);
-
+        
         createNeuralNetwork();
-
         camera.position.z = 15;
-
-        // Mouse interaction
+        
         canvas.addEventListener('mousemove', onMouseMove);
         canvas.addEventListener('click', onMouseClick);
-
         animate();
     }
 
     function createNeuralNetwork() {
         if (!scene || typeof THREE === 'undefined') return;
-
         const geometry = new THREE.BufferGeometry();
         const material = new THREE.PointsMaterial({
-            color: 0x64ffda,
+            color: currentTheme === 'dark' ? 0x64ffda : 0x00897b,
             size: 3,
             transparent: true,
             opacity: 0.3
         });
 
-        // Create nodes
         const positions = [];
         const colors = [];
-        nodePositions = [];
-        nodeVelocities = [];
-
+        
         for (let i = 0; i < 150; i++) {
-            const x = (Math.random() - 0.5) * 25;
-            const y = (Math.random() - 0.5) * 15;
-            const z = (Math.random() - 0.5) * 10;
-
-            positions.push(x, y, z);
-            nodePositions.push({ x, y, z });
-            nodeVelocities.push({
-                x: (Math.random() - 0.5) * 0.02,
-                y: (Math.random() - 0.5) * 0.02,
-                z: (Math.random() - 0.5) * 0.02
-            });
-
-            colors.push(
-                0.4 + Math.random() * 0.6,
-                0.8 + Math.random() * 0.2,
-                1
-            );
+            positions.push((Math.random() - 0.5) * 25, (Math.random() - 0.5) * 15, (Math.random() - 0.5) * 10);
+            nodePositions.push({ x: positions[positions.length-3], y: positions[positions.length-2], z: positions[positions.length-1] });
+            nodeVelocities.push({ x: (Math.random() - 0.5) * 0.02, y: (Math.random() - 0.5) * 0.02, z: (Math.random() - 0.5) * 0.02 });
         }
-
         geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-        geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
-
         particles = new THREE.Points(geometry, material);
         scene.add(particles);
 
-        // Create connections
         const lineMaterial = new THREE.LineBasicMaterial({
-            color: 0x64ffda,
+            color: currentTheme === 'dark' ? 0x64ffda : 0x00897b,
             transparent: true,
             opacity: 0.15
         });
 
         for (let i = 0; i < 80; i++) {
-            const lineGeometry = new THREE.BufferGeometry();
-            const linePositions = [];
-
             const startIdx = Math.floor(Math.random() * 150);
             const endIdx = Math.floor(Math.random() * 150);
-
             if (startIdx !== endIdx) {
-                const start = startIdx * 3;
-                const end = endIdx * 3;
-
-                linePositions.push(
-                    positions[start], positions[start + 1], positions[start + 2],
-                    positions[end], positions[end + 1], positions[end + 2]
-                );
-
-                lineGeometry.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
+                const lineGeometry = new THREE.BufferGeometry();
+                lineGeometry.setAttribute('position', new THREE.Float32BufferAttribute(new Array(6).fill(0), 3)); 
                 const line = new THREE.Line(lineGeometry, lineMaterial);
                 scene.add(line);
                 connections.push({ line, startIdx, endIdx });
@@ -2568,110 +2636,63 @@ document.getElementById('hamburger-btn').addEventListener('click', toggleMenu);
     }
 
     function onMouseClick(event) {
-        // Create ripple effect on click
-        const rippleStrength = 2;
         const rippleRadius = 5;
-
         nodePositions.forEach((node, index) => {
-            const distance = Math.sqrt(
-                Math.pow(node.x - mouse.x * 12, 2) +
-                Math.pow(node.y - mouse.y * 8, 2)
-            );
-
+            const distance = Math.sqrt(Math.pow(node.x - mouse.x * 12, 2) + Math.pow(node.y - mouse.y * 8, 2));
             if (distance < rippleRadius) {
-                const force = (rippleRadius - distance) / rippleRadius * rippleStrength;
-                const direction = {
-                    x: (node.x - mouse.x * 12) / distance,
-                    y: (node.y - mouse.y * 8) / distance,
-                    z: (Math.random() - 0.5) * 0.5
-                };
-
-                nodeVelocities[index].x += direction.x * force * 0.1;
-                nodeVelocities[index].y += direction.y * force * 0.1;
-                nodeVelocities[index].z += direction.z * force * 0.05;
+                const force = (rippleRadius - distance) / rippleRadius * 2;
+                nodeVelocities[index].x += ((node.x - mouse.x * 12) / distance) * force * 0.1;
+                nodeVelocities[index].y += ((node.y - mouse.y * 8) / distance) * force * 0.1;
             }
         });
     }
 
     function animate() {
         requestAnimationFrame(animate);
-
         if (particles && scene) {
-            // Update node positions
             const positions = particles.geometry.attributes.position.array;
-
             nodePositions.forEach((node, index) => {
-                // Apply mouse influence
-                const mouseInfluence = 0.001;
                 const dx = mouse.x * 12 - node.x;
                 const dy = mouse.y * 8 - node.y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-
-                if (distance < 8) {
-                    const force = (8 - distance) / 8 * mouseInfluence;
+                const dist = Math.sqrt(dx*dx + dy*dy);
+                if (dist < 8) {
+                    const force = (8 - dist) / 8 * 0.001;
                     nodeVelocities[index].x += dx * force;
                     nodeVelocities[index].y += dy * force;
                 }
-
-                // Update positions
+                
                 node.x += nodeVelocities[index].x;
                 node.y += nodeVelocities[index].y;
                 node.z += nodeVelocities[index].z;
-
-                // Apply damping
+                
                 nodeVelocities[index].x *= 0.98;
                 nodeVelocities[index].y *= 0.98;
                 nodeVelocities[index].z *= 0.98;
 
-                // Boundary constraints
-                if (Math.abs(node.x) > 12.5) {
-                    node.x = Math.sign(node.x) * 12.5;
-                    nodeVelocities[index].x *= -0.8;
-                }
-                if (Math.abs(node.y) > 7.5) {
-                    node.y = Math.sign(node.y) * 7.5;
-                    nodeVelocities[index].y *= -0.8;
-                }
-                if (Math.abs(node.z) > 5) {
-                    node.z = Math.sign(node.z) * 5;
-                    nodeVelocities[index].z *= -0.8;
-                }
+                if(Math.abs(node.x)>12.5) { node.x=Math.sign(node.x)*12.5; nodeVelocities[index].x*=-0.8; }
+                if(Math.abs(node.y)>7.5) { node.y=Math.sign(node.y)*7.5; nodeVelocities[index].y*=-0.8; }
+                if(Math.abs(node.z)>5) { node.z=Math.sign(node.z)*5; nodeVelocities[index].z*=-0.8; }
 
-                // Update buffer
-                positions[index * 3] = node.x;
-                positions[index * 3 + 1] = node.y;
-                positions[index * 3 + 2] = node.z;
+                positions[index*3] = node.x;
+                positions[index*3+1] = node.y;
+                positions[index*3+2] = node.z;
             });
-
             particles.geometry.attributes.position.needsUpdate = true;
 
-            // Update connections
-            connections.forEach(connection => {
-                const linePositions = connection.line.geometry.attributes.position.array;
-                const startNode = nodePositions[connection.startIdx];
-                const endNode = nodePositions[connection.endIdx];
-
-                linePositions[0] = startNode.x;
-                linePositions[1] = startNode.y;
-                linePositions[2] = startNode.z;
-                linePositions[3] = endNode.x;
-                linePositions[4] = endNode.y;
-                linePositions[5] = endNode.z;
-
-                connection.line.geometry.attributes.position.needsUpdate = true;
+            connections.forEach(conn => {
+                const pos = conn.line.geometry.attributes.position.array;
+                const start = nodePositions[conn.startIdx];
+                const end = nodePositions[conn.endIdx];
+                pos[0]=start.x; pos[1]=start.y; pos[2]=start.z;
+                pos[3]=end.x; pos[4]=end.y; pos[5]=end.z;
+                conn.line.geometry.attributes.position.needsUpdate = true;
             });
-
-            // Rotate the entire network slowly
+            
             particles.rotation.y += 0.002;
-            connections.forEach(connection => {
-                connection.line.rotation.y += 0.002;
-            });
-
             renderer.render(scene, camera);
         }
     }
 
-    // Handle window resize
     function handleResize() {
         const canvas = document.getElementById('neural-canvas');
         if (canvas && camera && renderer) {
@@ -2681,99 +2702,20 @@ document.getElementById('hamburger-btn').addEventListener('click', toggleMenu);
         }
     }
 
-    // Header scroll effect
-    const header = document.getElementById('header');
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-            header.classList.add('scrolled');
-        } else {
-            header.classList.remove('scrolled');
-        }
-    });
-
-    // Initialize map
     function initMap() {
         const map = L.map('map').setView([26.2183, 78.1828], 13);
-
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            attribution: '&copy; OpenStreetMap contributors'
         }).addTo(map);
-
-        L.marker([26.2183, 78.1828]).addTo(map)
-            .bindPopup('Gwalior, Madhya Pradesh')
-            .openPopup();
+        L.marker([26.2183, 78.1828]).addTo(map).bindPopup('Gwalior, Madhya Pradesh');
     }
-
-    // Initialize everything when page loads
-    window.onload = function() {
-        initMap();
-        if (window.innerWidth > 768) {
-            initNeuralNetwork();
-        } else {
-            // Hide canvas completely in DOM for mobile
-            const canvas = document.getElementById('neural-canvas');
-            if(canvas) canvas.style.display = 'none';
-        }
-
-        // Add smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
-
-        // Active navigation highlighting
-        const sections = document.querySelectorAll('section');
-        const navLinks = document.querySelectorAll('.nav-links a');
-
-        function highlightNavigation() {
-            let current = '';
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                const sectionHeight = section.clientHeight;
-                if (scrollY >= (sectionTop - 200)) {
-                    current = section.getAttribute('id');
-                }
-            });
-
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href').slice(1) === current) {
-                    link.classList.add('active');
-                }
-            });
-        }
-
-        window.addEventListener('scroll', highlightNavigation);
-        window.addEventListener('resize', handleResize);
-    };
-
-    // Intersection Observer for animations
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
 
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.animation = 'fadeInUp 0.8s ease-out forwards';
-            }
+            if (entry.isIntersecting) entry.target.style.animation = 'fadeInUp 0.8s ease-out forwards';
         });
-    }, observerOptions);
+    }, { threshold: 0.1 });
 
-    // Observe elements for animation
     document.addEventListener('DOMContentLoaded', () => {
         const animateElements = document.querySelectorAll('.workflow-step, .skill-category, .experience-item, .case-study');
         animateElements.forEach(el => {
@@ -2783,20 +2725,8 @@ document.getElementById('hamburger-btn').addEventListener('click', toggleMenu);
         });
     });
 
-    // Add fadeInUp animation
     const style = document.createElement('style');
-    style.textContent = `
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-    `;
+    style.textContent = `@keyframes fadeInUp { from { opacity: 0; transform: translateY(50px); } to { opacity: 1; transform: translateY(0); } }`;
     document.head.appendChild(style);
 </script>
 <script src="https://cdn.lordicon.com/lordicon.js"></script>
